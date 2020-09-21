@@ -1,0 +1,10 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    TODO - Create Listing Form
+    <form action="" method="post">
+    {% csrf_token %}
+        {{ form }}
+        <input class="btn btn-primary" type="submit" name="submit" value="Submit">
+    </form>
+{% endblock %}

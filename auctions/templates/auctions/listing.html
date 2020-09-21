@@ -1,17 +1,12 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Active Listings</h2>
-    <br>
-    {% for listing in active_listings %}
-        <div class="row">
+    <div class="row">
         <div class="col-md-3">
-            <a href="{% url 'listing' listing.id %}">
-                <img style="max-height: 180px; max-width: 200px;" src="{{ listing.image_url }}" alt="{{ listing.title }}">
-            </a>
+            <img style="max-height: 300px; max-width: 300px;" src="{{ listing.image_url }}" alt="{{ listing.title }}">
         </div>
         <div class="col-md-9">
-            <a href="{% url 'listing' listing.id %}"><strong>{{ listing.title }}</strong></a><br>
+            <strong>{{ listing.title }}</strong><br>
             Starting Bid: ${{ listing.starting_bid }}<br>
             {% if listing.current_bid >= listing.starting_bid %}
             Current Price: {{ listing.current_bid }} <br>
@@ -23,6 +18,4 @@
         </div>
         </div>
         <hr>
-    {% endfor %}
-
 {% endblock %}

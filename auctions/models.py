@@ -21,7 +21,7 @@ class AuctionListing(models.Model):
     # AuctionListing needs User id -> we need to know who posted the Listing -> onetomany? one user can have several listings
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     dt = models.DateTimeField(auto_now_add=True)
-    title = models.CharField(max_length=64)
+    title = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
     starting_bid = models.FloatField(null=True)
     current_bid = models.FloatField(null=True, default=0)
@@ -30,7 +30,7 @@ class AuctionListing(models.Model):
     active = None  # Should be True or False if Listing Closed active should be False
 
     def __str__(self):
-        return f'{self.id}: {self.title}, Starting Bid: ${self.starting_bid:,.2f}, Posted by: {self.user}'
+        return f'{self.title}, Posted by: {self.user}'
 
 
 class Bid(models.Model):
@@ -63,6 +63,7 @@ class Comment(models.Model):
 
 
 class WatchList(models.Model):
+    is_watching = models.BooleanField(default=False)
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     listing = models.ForeignKey(AuctionListing, null=True, on_delete=models.SET_NULL)
 
