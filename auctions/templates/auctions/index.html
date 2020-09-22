@@ -18,7 +18,11 @@
             {% else %}
             Current Price: No bids<br>
             {% endif %}
+            {% if listing.user.username != user.username%}
             Posted by: {{ listing.user }} <br>
+            {% else %}
+            Posted by: You <br>
+            {% endif %}
             Created {{ listing.dt }}
         </div>
         </div>
