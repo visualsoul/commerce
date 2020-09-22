@@ -24,10 +24,9 @@ class AuctionListing(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
     starting_bid = models.FloatField(null=True)
-    current_bid = models.FloatField(null=True, default=0)
     image_url = models.CharField(max_length=200, null=True, blank=True)
     category = models.CharField(max_length=200, null=True, choices=CATEGORY)
-    active = None  # Should be True or False if Listing Closed active should be False
+    active = models.BooleanField(default=True)  # Should be True or False if Listing Closed active should be False
 
     def __str__(self):
         return f'{self.title}, Posted by: {self.user}'
@@ -35,13 +34,13 @@ class AuctionListing(models.Model):
 
 class Bid(models.Model):
     # bid needs amount
-    amount = models.FloatField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     # bid needs bidder - User id (FK)
-    bidder = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    bidder = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='bidder')
     # bid needs datetime timestamp
     dt = models.DateTimeField(auto_now_add=True)
     # bid needs AuctionListing id -> we need to know which user.id is bidding on which AuctionListing.id manytomany?
-    listing = models.ForeignKey(AuctionListing, null=True, on_delete=models.CASCADE)
+    listing = models.ForeignKey(AuctionListing, null=True, on_delete=models.CASCADE, related_name='bidItem')
 
     def __str__(self):
         return f"{self.listing}, Highest Bidder: {self.bidder}, Offer: ${self.amount:,.2f}"

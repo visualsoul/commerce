@@ -8,11 +8,16 @@
         <div class="col-md-6 col-sm-10 col-xs-10">
             <strong>{{ listing.title }}</strong><br>
             Starting Bid: ${{ listing.starting_bid }}<br>
-            {% if listing.current_bid >= listing.starting_bid %}
-            Current Price: {{ listing.current_bid }} <br>
+            {% if current_price >= listing.starting_bid %}
+            Current Price: {{ current_price }} <br>
             {% else %}
             Current Price: No bids<br>
             {% endif %}
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ place_bid_form }}
+                <input type="submit" name="place_bid" value="Submit Bid">
+            </form>
             Description: {{ listing.description }} <br>
             Created on {{ listing.dt }} by {{ listing.user }}<br><br>
             {% if user.is_authenticated %}

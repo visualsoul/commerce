@@ -9,3 +9,7 @@ class CreateListing(ModelForm):
         fields = ['title', 'description', 'starting_bid', 'category', 'image_url']
 
 
+class PlaceBid(forms.Form):
+     amount = forms.FloatField()
+
+

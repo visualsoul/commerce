@@ -1,13 +1,14 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import User, AuctionListing, WatchList
-from .forms import CreateListing
+from .models import User, AuctionListing, WatchList, Bid, Comment
+from .forms import CreateListing, PlaceBid
+from datetime import datetime
 
 
 def index(request):
@@ -23,9 +24,43 @@ def listing(request, pk):
     watch_list_counter = WatchList.objects.filter(user=request.user.id).count()
     _listing = AuctionListing.objects.get(id=pk)
     watching = WatchList.objects.filter(user=request.user.id, listing=_listing).count()
+    place_bid_form = PlaceBid()
+    bids = _listing.bidItem.all()
+    max_bid = 0
+    try:
+        max_bid = bids.order_by('-amount')[0].amount
+    except:
+        pass
+
+    # --------------------------- place bid form ------------------------------------------------
+    message = None
+    if request.POST.get('place_bid'):
+        place_bid_form = PlaceBid(request.POST)
+        amount = request.POST.get('amount')
+        user = request.user
+        bids = _listing.bidItem.all()
+        try:
+            max_bid = bids.order_by('-amount')[0].amount
+        except:
+            max_bid = 0
+        print(max_bid)
+        print(bids)
+        if float(amount) >= float(_listing.starting_bid):
+            if float(amount) > float(max_bid):
+                bid = Bid(bidder=user, listing=_listing, amount=float(amount))
+                bid.save()
+                print("Bid placed")
+
+            else:
+                message = 'Your bid needs to be higher than the current price'
+                print(message)
+        else:
+            message = 'Your bid needs to be higher than the starting bid.'
+            print(message)
+        return HttpResponseRedirect(reverse("listing", args=[_listing.id]))
 
 
-    #TODO: Needs reworking
+    # ------------------------ watchlist button -------------------------------------------------
     if request.POST.get('create_watchlist_btn'):
         # Check if object exists, if not catch exception and add object
         try:
@@ -37,12 +72,15 @@ def listing(request, pk):
     if request.POST.get('delete_watchlist_btn'):
         WatchList.objects.get(user=request.user, listing=_listing).delete()
         return HttpResponseRedirect(reverse("listing", args=[_listing.id]))
+    # --------------------------------------------------------------------------------------------
 
 
     context = {
         "listing": _listing,
         "watchlist_counter": watch_list_counter,
-        'watching': watching
+        'watching': watching,
+        'place_bid_form': place_bid_form,
+        'current_price': max_bid
     }
     return render(request, "auctions/listing.html", context)
 
