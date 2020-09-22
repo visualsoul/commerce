@@ -7,24 +7,25 @@
         </div>
         <div class="col-md-6 col-sm-10 col-xs-10">
             <strong>{{ listing.title }}</strong><br>
+            Description: {{ listing.description }} <br>
+            Created on {{ listing.dt }} by {{ listing.user }}<br><br>
             Starting Bid: ${{ listing.starting_bid }}<br>
+
             {% if current_price >= listing.starting_bid %}
             Current Price: {{ current_price }} <br>
             {% else %}
             Current Price: No bids<br><br>
             {% endif %}
 
-            {% if listing.active %}
+        {% if user.is_authenticated %}
+            {% if listing.active and user.username != listing.user.username %}
             <form action="" method="post">
                 {% csrf_token %}
                 {{ place_bid_form }}
                 <input type="submit" name="place_bid" value="Submit Bid">
             </form>
             {% endif %}
-            Description: {{ listing.description }} <br>
-            Created on {{ listing.dt }} by {{ listing.user }}<br><br>
 
-            {% if user.is_authenticated %}
 
                 {% if watching == 0 %}
                 <form action="" method="post">
@@ -53,6 +54,9 @@
                      {% endif %}
 
                 {% endif %}
+
+            {% else %}
+            <span>You need to <a href="{% url 'login' %}">Login</a> / <a href="{% url 'register' %}">Register</a> if you want to place a bid.</span>
 
         {% endif %}
         </div>

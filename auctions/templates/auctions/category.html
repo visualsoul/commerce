@@ -1,0 +1,28 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>{{ category }}</h2>
+    <br>
+    {% for listing in active_listings %}
+        <div class="row">
+        <div class="col-md-3">
+            <a href="{% url 'listing' listing.id %}">
+                <img style="max-height: 180px; max-width: 200px;" src="{{ listing.image_url }}" alt="{{ listing.title }}">
+            </a>
+        </div>
+        <div class="col-md-9">
+            <a href="{% url 'listing' listing.id %}"><strong>{{ listing.title }}</strong></a><br>
+            Starting Bid: ${{ listing.starting_bid }}<br>
+            {% if listing.current_bid >= listing.starting_bid %}
+            Current Price: {{ listing.current_bid }} <br>
+            {% else %}
+            Current Price: No bids<br>
+            {% endif %}
+            Posted by: {{ listing.user }} <br>
+            Created {{ listing.dt }}
+        </div>
+        </div>
+        <hr>
+    {% endfor %}
+
+{% endblock %}

@@ -9,7 +9,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import User, AuctionListing, WatchList, Bid, Comment
 from .forms import CreateListing, PlaceBid
 
-
+categories = {1: "Laptop", 2: "Desktop PC", 3: "CPU", 4: "Memory (RAM)", 5: "Motherboards", 6: "Graphics Cards",
+                  7: "Networking", 8: "Audio", 9: "Other Components"}
 
 def index(request):
     active_listings = AuctionListing.objects.filter(active=True)
@@ -90,6 +91,27 @@ def listing(request, pk):
         'current_price': max_bid
     }
     return render(request, "auctions/listing.html", context)
+
+
+def view_categories(request):
+    watch_list_counter = WatchList.objects.filter(user=request.user.id).count()
+
+
+    context = {
+        'categories': categories,
+        "watchlist_counter": watch_list_counter
+    }
+    return render(request, "auctions/categories.html", context)
+
+
+def view_category(request, category_id):
+    category = categories[int(category_id)]
+    active_listings = AuctionListing.objects.filter(active=True, category=category)
+    watch_list_counter = WatchList.objects.filter(user=request.user.id).count()
+    context = {"watchlist_counter": watch_list_counter,
+               "category": category,
+               "active_listings": active_listings}
+    return render(request, "auctions/category.html", context)
 
 
 @login_required(login_url='login')
