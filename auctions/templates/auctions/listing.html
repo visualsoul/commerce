@@ -14,7 +14,22 @@
             Current Price: No bids<br>
             {% endif %}
             Posted by: {{ listing.user }} <br>
-            Created {{ listing.dt }}
+            Created {{ listing.dt }} <br>
+            {% if user.is_authenticated %}
+            {% if not is_watching %}
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="listing_id" value = "{{ listing.id }}">
+                <input class="btn btn-sm btn-warning" type="submit" name='create_watchlist_btn' value="Add to watchlist">
+            </form>
+             {% else %}
+                <form action="" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="listing_id" value = "{{ listing.id }}">
+                <input class="btn btn-sm btn-warning" type="submit" name='delete_watchlist_btn' value="Remove from watchlist">
+            </form>
+             {% endif %}
+        {% endif %}
         </div>
         </div>
         <hr>

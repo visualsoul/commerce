@@ -65,7 +65,7 @@ class Comment(models.Model):
 class WatchList(models.Model):
     is_watching = models.BooleanField(default=False)
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    listing = models.ForeignKey(AuctionListing, null=True, on_delete=models.SET_NULL)
+    listing = models.ForeignKey(AuctionListing, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.user} is watching: {self.listing}"
