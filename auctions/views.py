@@ -8,11 +8,11 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from .models import User, AuctionListing, WatchList, Bid, Comment
 from .forms import CreateListing, PlaceBid
-from datetime import datetime
+
 
 
 def index(request):
-    active_listings = AuctionListing.objects.all()
+    active_listings = AuctionListing.objects.filter(active=True)
     watch_list_counter = WatchList.objects.filter(user=request.user.id).count()
     context = {
         "active_listings": active_listings,
@@ -27,10 +27,8 @@ def listing(request, pk):
     place_bid_form = PlaceBid()
     bids = _listing.bidItem.all()
     max_bid = 0
-    try:
+    if len(bids) > 0:
         max_bid = bids.order_by('-amount')[0].amount
-    except:
-        pass
 
     # --------------------------- place bid form ------------------------------------------------
     message = None
@@ -39,18 +37,16 @@ def listing(request, pk):
         amount = request.POST.get('amount')
         user = request.user
         bids = _listing.bidItem.all()
-        try:
+        max_bid = 0
+        if len(bids) > 0:
             max_bid = bids.order_by('-amount')[0].amount
-        except:
-            max_bid = 0
-        print(max_bid)
-        print(bids)
+        #print(max_bid)
+        #print(bids)
         if float(amount) >= float(_listing.starting_bid):
             if float(amount) > float(max_bid):
                 bid = Bid(bidder=user, listing=_listing, amount=float(amount))
                 bid.save()
                 print("Bid placed")
-
             else:
                 message = 'Your bid needs to be higher than the current price'
                 print(message)
@@ -58,6 +54,7 @@ def listing(request, pk):
             message = 'Your bid needs to be higher than the starting bid.'
             print(message)
         return HttpResponseRedirect(reverse("listing", args=[_listing.id]))
+    #--------------------------------------------------------------------------------------------
 
 
     # ------------------------ watchlist button -------------------------------------------------
@@ -74,6 +71,16 @@ def listing(request, pk):
         return HttpResponseRedirect(reverse("listing", args=[_listing.id]))
     # --------------------------------------------------------------------------------------------
 
+    # --------------------------- Close Auction Listing ------------------------------------------
+    #TODO needs finishing need changes in teplate if active show this or else show different template structure..
+    if request.POST.get('close_auction'):
+        listItem = AuctionListing.objects.get(pk=_listing.id)
+        listItem.active = False
+        listItem.save()
+        print('List Item closed.')
+        return HttpResponseRedirect(reverse("listing", args=[_listing.id]))
+
+    # --------------------------------------------------------------------------------------------
 
     context = {
         "listing": _listing,

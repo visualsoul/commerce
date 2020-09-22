@@ -11,29 +11,49 @@
             {% if current_price >= listing.starting_bid %}
             Current Price: {{ current_price }} <br>
             {% else %}
-            Current Price: No bids<br>
+            Current Price: No bids<br><br>
             {% endif %}
+
+            {% if listing.active %}
             <form action="" method="post">
                 {% csrf_token %}
                 {{ place_bid_form }}
                 <input type="submit" name="place_bid" value="Submit Bid">
             </form>
+            {% endif %}
             Description: {{ listing.description }} <br>
             Created on {{ listing.dt }} by {{ listing.user }}<br><br>
+
             {% if user.is_authenticated %}
-            {% if watching == 0 %}
-            <form action="" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="listing_id" value = "{{ listing.id }}">
-                <input class="btn btn-sm btn-warning" type="submit" name='create_watchlist_btn' value="Add to watchlist">
-            </form>
-            {% else %}
+
+                {% if watching == 0 %}
                 <form action="" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="listing_id" value = "{{ listing.id }}">
-                <input class="btn btn-sm btn-warning" type="submit" name='delete_watchlist_btn' value="Remove from watchlist">
-            </form>
+                    {% csrf_token %}
+                    <input type="hidden" name="listing_id" value = "{{ listing.id }}">
+                    <input class="btn btn-sm btn-warning" type="submit" name='create_watchlist_btn' value="Add to watchlist">
+                </form>
+                {% else %}
+                    <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="listing_id" value = "{{ listing.id }}">
+                    <input class="btn btn-sm btn-warning" type="submit" name='delete_watchlist_btn' value="Remove from watchlist">
+                </form>
             {% endif %}
+
+                {% if user.username == listing.user.username %}
+                    <br>
+
+                    {% if listing.active %}
+                        <form action="" method="post">
+                             {% csrf_token %}
+                            <input class="btn btn-large btn-danger" type="submit" name="close_auction" value="Close">
+                        </form>
+                     {% else %}
+                         <strong>- Listing Closed -</strong>
+                     {% endif %}
+
+                {% endif %}
+
         {% endif %}
         </div>
         </div>
