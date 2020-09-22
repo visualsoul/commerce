@@ -25,7 +25,7 @@ class AuctionListing(models.Model):
     description = models.CharField(max_length=200)
     starting_bid = models.FloatField(null=True)
     current_bid = models.FloatField(null=True, default=0)
-    image_url = models.CharField(max_length=200)
+    image_url = models.CharField(max_length=200, null=True, blank=True)
     category = models.CharField(max_length=200, null=True, choices=CATEGORY)
     active = None  # Should be True or False if Listing Closed active should be False
 

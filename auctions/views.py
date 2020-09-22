@@ -21,29 +21,31 @@ def index(request):
 
 def listing(request, pk):
     watch_list_counter = WatchList.objects.filter(user=request.user.id).count()
-    listing = AuctionListing.objects.get(id=pk)
-    is_watching = False
+    _listing = AuctionListing.objects.get(id=pk)
+    watching = WatchList.objects.filter(user=request.user.id, listing=_listing).count()
+
 
     #TODO: Needs reworking
     if request.POST.get('create_watchlist_btn'):
         # Check if object exists, if not catch exception and add object
         try:
-            is_watching = WatchList.objects.get(user=request.user, listing=listing).is_watching
-        except ObjectDoesNotExist as e:
-            WatchList.objects.create(user=request.user, listing=listing, is_watching=True).save()
-            is_watching = True
-        return HttpResponseRedirect(reverse("watchlist"))
+            is_watching = WatchList.objects.get(user=request.user, listing=_listing).is_watching
+        except ObjectDoesNotExist:
+            WatchList.objects.create(user=request.user, listing=_listing, is_watching=True).save()
+        return HttpResponseRedirect(reverse("listing", args=[_listing.id]))
 
-    elif request.POST.get('delete_watchlist_btn'):
-        WatchList.objects.get(user=request.user, listing=listing).delete()
-        return HttpResponseRedirect(reverse("watchlist"))
+    if request.POST.get('delete_watchlist_btn'):
+        WatchList.objects.get(user=request.user, listing=_listing).delete()
+        return HttpResponseRedirect(reverse("listing", args=[_listing.id]))
+
 
     context = {
-        "listing": listing,
+        "listing": _listing,
         "watchlist_counter": watch_list_counter,
-        "is_watching": is_watching
+        'watching': watching
     }
     return render(request, "auctions/listing.html", context)
+
 
 @login_required(login_url='login')
 def watchlist(request):
@@ -68,14 +70,19 @@ def create_listing(request):
     if request.POST:
         form = CreateListing(request.POST)
         if form.is_valid():
-            db_data = form.save()
-            db_data.user = request.user
-            db_data.save()
+            instance = form.save(commit=False)
+            # Check if user entered image url, if not -> assign default image
+            if form.cleaned_data['image_url'] is None:
+                no_image = 'https://vcunited.club/wp-content/uploads/2020/01/No-image-available-2.jpg'
+                instance.image_url = no_image
+            instance.user = request.user
+            instance.save()
             return HttpResponseRedirect(reverse('index'))
     form = CreateListing()
     context = {'form': form,
                'watchlist_counter': watch_list_counter}
     return render(request, 'auctions/create_listing.html', context)
+
 
 def login_view(request):
     if request.method == "POST":

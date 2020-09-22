@@ -1,13 +1,15 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+    <h2>Watchlist</h2>
+    <br>
     {% if watchlist %}
         {% for item in watchlist %}
     <div class="row">
-        <div class="col-md-3">
+        <div style="margin-right: 120px; margin-bottom: 20px;" class="col-md-3 col-sm-5 col-s-5 col-xs-5">
             <img style="max-height: 300px; max-width: 300px;" src="{{ item.listing.image_url }}" alt="{{ item.listing.title }}">
         </div>
-        <div class="col-md-9">
+        <div class="col-md-6 col-sm-10 col-xs-10">
             <a href="{% url 'listing' item.listing.id %}"><strong>{{ item.listing.title }}</strong></a><br>
             Starting Bid: ${{ item.listing.starting_bid }}<br>
             {% if item.listing.current_bid >= item.listing.starting_bid %}
