@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 
 from .models import User, AuctionListing, WatchList, Bid, Comment
-from .forms import CreateListing, PlaceBid
+from .forms import CreateListing, PlaceBid, CommentForm
 
 categories = {1: "Laptop", 2: "Desktop PC", 3: "CPU", 4: "Memory (RAM)", 5: "Motherboards", 6: "Graphics Cards",
                   7: "Networking", 8: "Audio", 9: "Other Components"}
@@ -25,16 +25,33 @@ def listing(request, pk):
     watch_list_counter = WatchList.objects.filter(user=request.user.id).count()
     _listing = AuctionListing.objects.get(id=pk)
     watching = WatchList.objects.filter(user=request.user.id, listing=_listing).count()
+    comment_form = CommentForm()
     place_bid_form = PlaceBid()
     bids = _listing.bidItem.all()
+    comments = _listing.comment_set.all()
+
     max_bid = 0
     current_bidder = None
+    message = None
+
     if len(bids) > 0:
         max_bid = bids.order_by('-amount')[0].amount
         current_bidder = bids.order_by('-amount')[0].bidder
 
+    # --------------------------- Comments form -------------------------------------------------
+    if request.POST.get('submit_comment'):
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment_message = request.POST.get('message')
+            print(comment_message)
+            comment_instance = Comment(user=request.user, listing=_listing, message=comment_message)
+            comment_instance.save()
+        return HttpResponseRedirect(reverse('listing', args=[_listing.id]))
+
+    # -------------------------------------------------------------------------------------------
+
     # --------------------------- place bid form ------------------------------------------------
-    message = None
+
     if request.POST.get('place_bid'):
         place_bid_form = PlaceBid(request.POST)
         amount = request.POST.get('amount')
@@ -43,8 +60,6 @@ def listing(request, pk):
         max_bid = 0
         if len(bids) > 0:
             max_bid = bids.order_by('-amount')[0].amount
-        #print(max_bid)
-        #print(bids)
         if float(amount) >= float(_listing.starting_bid):
             if float(amount) > float(max_bid):
                 bid = Bid(bidder=user, listing=_listing, amount=float(amount))
@@ -91,7 +106,9 @@ def listing(request, pk):
         'watching': watching,
         'place_bid_form': place_bid_form,
         'current_price': max_bid,
-        'current_bidder': current_bidder
+        'current_bidder': current_bidder,
+        'comment_form': comment_form,
+        'comments': comments
     }
     return render(request, "auctions/listing.html", context)
 

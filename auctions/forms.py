@@ -13,3 +13,7 @@ class PlaceBid(forms.Form):
      amount = forms.FloatField()
 
 
+class CommentForm(forms.Form):
+    message = forms.CharField(label="Comment", max_length=200, widget=forms.Textarea(attrs={'class': "form-control"}))
+
+
