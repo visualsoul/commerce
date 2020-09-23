@@ -102,8 +102,7 @@
                    {% if comments %}
                    {% for comment in comments %}
                      <div class="container">
-                     <span>{{ comment.user.username }}</span><br>
-                     <span>{{ comment.message }}</span><br>
+                         <span>{{ comment.user.username }} says:</span> <span>{{ comment.message }}</span><br>
                      Posted on <span>{{ comment.dt }}</span>
                          <hr>
                      </div>

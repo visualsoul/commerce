@@ -30,6 +30,9 @@ def listing(request, pk):
     bids = _listing.bidItem.all()
     comments = _listing.comment_set.all()
 
+    if len(comments) > 0:
+        comments = comments.order_by('-dt')
+
     max_bid = 0
     current_bidder = None
     message = None
