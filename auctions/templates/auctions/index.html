@@ -12,16 +12,17 @@
         </div>
         <div class="col-md-9">
             <a href="{% url 'listing' listing.id %}"><strong>{{ listing.title }}</strong></a><br>
-            Starting Bid: ${{ listing.starting_bid }}<br>
-            {% if listing.current_bid >= listing.starting_bid %}
-            Current Price: {{ listing.current_bid }} <br>
-            {% else %}
-            Current Price: No bids<br>
-            {% endif %}
+            Starting Bid: ${{ listing.starting_bid|floatformat:2 }}<br>
+            {% if listing.bidItem.last.amount %}
+                Current Price: ${{ listing.bidItem.last.amount }}<br>
+                {% else %}
+                Current Price: No Bids <br>
+             {% endif %}
+
             {% if listing.user.username != user.username%}
-            Posted by: {{ listing.user }} <br>
-            {% else %}
-            Posted by: You <br>
+                Posted by: {{ listing.user }} <br>
+                {% else %}
+                Posted by: You <br>
             {% endif %}
             Created {{ listing.dt }}
         </div>

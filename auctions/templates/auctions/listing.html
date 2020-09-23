@@ -8,17 +8,34 @@
         <div class="col-md-6 col-sm-10 col-xs-10">
             <strong>{{ listing.title }}</strong><br>
             Description: {{ listing.description }} <br>
+
             {% if user.username != listing.user.username %}
             Created on {{ listing.dt }} by {{ listing.user }}<br><br>
             {% else %}
             Created on {{ listing.dt }} by You<br><br>
             {% endif %}
+
             Starting Bid: ${{ listing.starting_bid }}<br>
 
             {% if current_price >= listing.starting_bid %}
-            Current Price: {{ current_price }} <br>
+
+                {% if listing.active %}
+                Current Price: {{ current_price }} <br>
+                    {% else %}
+                Final Price: {{ current_price }} <br>
+                    {% endif %}
+
+
+                {% if current_bidder and listing.active %}
+                    Current Bidder: {{ current_bidder }} <br><br>
+                {% elif current_bidder and not listing.active %}
+                    Winning Bidder: {{ current_bidder }} <br><br>
+                {% else %}
+                    <span>Item did not sell</span> <br><br>
+                {% endif %}
+
             {% else %}
-            Current Price: No bids<br><br>
+            Current Price: No bids<br>
 
             {% endif %}
 

@@ -28,8 +28,10 @@ def listing(request, pk):
     place_bid_form = PlaceBid()
     bids = _listing.bidItem.all()
     max_bid = 0
+    current_bidder = None
     if len(bids) > 0:
         max_bid = bids.order_by('-amount')[0].amount
+        current_bidder = bids.order_by('-amount')[0].bidder
 
     # --------------------------- place bid form ------------------------------------------------
     message = None
@@ -88,7 +90,8 @@ def listing(request, pk):
         "watchlist_counter": watch_list_counter,
         'watching': watching,
         'place_bid_form': place_bid_form,
-        'current_price': max_bid
+        'current_price': max_bid,
+        'current_bidder': current_bidder
     }
     return render(request, "auctions/listing.html", context)
 
