@@ -14,6 +14,6 @@ class PlaceBid(forms.Form):
 
 
 class CommentForm(forms.Form):
-    message = forms.CharField(label="Comment", max_length=200, widget=forms.Textarea(attrs={'class': "form-control"}))
+    message = forms.CharField(label="Comment", max_length=200, widget=forms.Textarea(attrs={'class': "form-control comment-form"}))
 
 

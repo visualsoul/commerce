@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 
 from .models import User, AuctionListing, WatchList, Bid, Comment
 from .forms import CreateListing, PlaceBid, CommentForm
@@ -35,7 +36,7 @@ def listing(request, pk):
 
     max_bid = 0
     current_bidder = None
-    message = None
+
 
     if len(bids) > 0:
         max_bid = bids.order_by('-amount')[0].amount
@@ -46,9 +47,9 @@ def listing(request, pk):
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             comment_message = request.POST.get('message')
-            print(comment_message)
             comment_instance = Comment(user=request.user, listing=_listing, message=comment_message)
             comment_instance.save()
+            messages.success(request, 'Comment posted.', extra_tags='message-success')
         return HttpResponseRedirect(reverse('listing', args=[_listing.id]))
 
     # -------------------------------------------------------------------------------------------
@@ -67,13 +68,11 @@ def listing(request, pk):
             if float(amount) > float(max_bid):
                 bid = Bid(bidder=user, listing=_listing, amount=float(amount))
                 bid.save()
-                print("Bid placed")
+                messages.success(request, "Bid placed, you are the current bidder", extra_tags='message-success')
             else:
-                message = 'Your bid needs to be higher than the current price'
-                print(message)
+                messages.error(request, 'Your bid needs to be higher than the current price', extra_tags='message-error')
         else:
-            message = 'Your bid needs to be higher than the starting bid.'
-            print(message)
+            messages.error(request, 'Your bid needs to be higher than the starting bid.', extra_tags='message-error')
         return HttpResponseRedirect(reverse("listing", args=[_listing.id]))
     #--------------------------------------------------------------------------------------------
 
@@ -85,10 +84,12 @@ def listing(request, pk):
             is_watching = WatchList.objects.get(user=request.user, listing=_listing).is_watching
         except ObjectDoesNotExist:
             WatchList.objects.create(user=request.user, listing=_listing, is_watching=True).save()
+            messages.success(request, 'Listing added to Watchlist.', extra_tags='message-success')
         return HttpResponseRedirect(reverse("listing", args=[_listing.id]))
 
     if request.POST.get('delete_watchlist_btn'):
         WatchList.objects.get(user=request.user, listing=_listing).delete()
+        messages.success(request, 'Listing removed from Watchlist.', extra_tags='message-success')
         return HttpResponseRedirect(reverse("listing", args=[_listing.id]))
     # --------------------------------------------------------------------------------------------
 
@@ -98,7 +99,7 @@ def listing(request, pk):
         listItem = AuctionListing.objects.get(pk=_listing.id)
         listItem.active = False
         listItem.save()
-        print('List Item closed.')
+        messages.success(request, 'Listing Closed', extra_tags='message-success')
         return HttpResponseRedirect(reverse("listing", args=[_listing.id]))
 
     # --------------------------------------------------------------------------------------------
@@ -146,6 +147,7 @@ def watchlist(request):
         listing_id = request.POST.get('listing_id')
         listing = AuctionListing.objects.get(pk=listing_id)
         WatchList.objects.filter(user=request.user, listing=listing).delete()
+        messages.success(request, 'Listing removed from Watchlist.', extra_tags='message-success')
         return HttpResponseRedirect(reverse("watchlist"))
     context = {
         'watchlist': watch_list,

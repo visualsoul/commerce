@@ -1,13 +1,26 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+
+    {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <div style="margin-right: 20px;" class="row justify-content-center {% if message.tags %} {{ message.tags }} {% endif %}">
+                   <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            </ul>
+            <br>
+    {% endif %}
+
     <h2>Watchlist</h2>
     <br>
     {% if watchlist %}
+        <div class="container">
         {% for item in watchlist %}
     <div class="row">
         <div style="margin-right: 120px; margin-bottom: 20px;" class="col-md-3 col-sm-5 col-s-5 col-xs-5">
-            <img style="max-height: 300px; max-width: 300px;" src="{{ item.listing.image_url }}" alt="{{ item.listing.title }}">
+            <img style="max-height: 300px; max-width: 300px; padding-right: 20px;" src="{{ item.listing.image_url }}" alt="{{ item.listing.title }}">
         </div>
         <div class="col-md-6 col-sm-10 col-xs-10">
             <a href="{% url 'listing' item.listing.id %}"><strong>{{ item.listing.title }}</strong></a><br>
@@ -40,5 +53,6 @@
         </div>
         <hr>
         {% endfor %}
+        </div>  <!-- End of Container Class -->
     {% endif %}
 {% endblock %}

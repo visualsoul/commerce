@@ -4,13 +4,14 @@
     <h2>Active Listings</h2>
     <br>
     {% for listing in active_listings %}
+        <div class="container">
         <div class="row">
-        <div class="col-md-3">
+        <div class="col col-4">
             <a href="{% url 'listing' listing.id %}">
-                <img style="max-height: 180px; max-width: 200px;" src="{{ listing.image_url }}" alt="{{ listing.title }}">
+                <img src="{{ listing.image_url }}" alt="{{ listing.title }}">
             </a>
         </div>
-        <div class="col-md-9" style="max-width: 700px;">
+        <div class="col col-6" style="min-width: 500px; max-width: 600px;">
             <a href="{% url 'listing' listing.id %}"><strong>{{ listing.title }}</strong></a><br>
             <span>{{ listing.description }}</span><br><br>
             Starting Bid: ${{ listing.starting_bid|floatformat:2 }}<br>
@@ -26,6 +27,7 @@
                 Posted by: You <br>
             {% endif %}
             Created {{ listing.dt }}
+        </div>
         </div>
         </div>
         <hr>

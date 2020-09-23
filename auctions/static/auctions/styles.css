@@ -1,3 +1,56 @@
 body {
-    padding: 10px;
+    padding: 20px;
+}
+
+.message-success {
+    visibility: hidden;
+    margin-left: 5px;
+    color: white;
+    background: darkolivegreen;
+    height: 0px;
+    font-family: sans-serif;
+    font-size: 1.3em;
+    padding-top: 3px;
+    animation-name: message-success;
+    animation-duration: 12s;
+}
+
+.message-error {
+    visibility: hidden;
+    margin-left: 5px;
+    color: white;
+    background: darkred;
+    height: 0px;
+    font-family: sans-serif;
+    font-size: 1.3em;
+    padding-top: 3px;
+    animation-name: message-error;
+    animation-duration: 12s;
+}
+
+@keyframes message-error {
+    0% {background-color: white; visibility: hidden;}
+    10% {background-color: darkred; visibility: visible; height: 40px;}
+    80% {background-color: darkred; visibility: visible; height: 40px;}
+    100% {background-color: white;visibility: hidden; height: 0px;}
+}
+
+@keyframes message-success {
+    0% {background-color: white; visibility: hidden;}
+    10% {background-color: darkolivegreen; visibility: visible; height: 40px;}
+    80% {background-color: darkolivegreen; visibility: visible; height: 40px;}
+    100% {background-color: white;visibility: hidden; height: 0px;}
+}
+
+.comment-form {
+    max-width: 600px;
+    min-width: 450px;
+}
+
+img {
+    max-width: 300px;
+    max-height: 300px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+
 }
