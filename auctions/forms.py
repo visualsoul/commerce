@@ -10,7 +10,7 @@ class CreateListing(ModelForm):
 
 
 class PlaceBid(forms.Form):
-     amount = forms.FloatField()
+     amount = forms.FloatField(label='Bid')
 
 
 class CommentForm(forms.Form):

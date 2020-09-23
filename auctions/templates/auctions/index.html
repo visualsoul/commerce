@@ -10,8 +10,9 @@
                 <img style="max-height: 180px; max-width: 200px;" src="{{ listing.image_url }}" alt="{{ listing.title }}">
             </a>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-9" style="max-width: 700px;">
             <a href="{% url 'listing' listing.id %}"><strong>{{ listing.title }}</strong></a><br>
+            <span>{{ listing.description }}</span><br><br>
             Starting Bid: ${{ listing.starting_bid|floatformat:2 }}<br>
             {% if listing.bidItem.last.amount %}
                 Current Price: ${{ listing.bidItem.last.amount }}<br>

@@ -7,13 +7,30 @@
         </div>
         <div style="min-width: 400px; max-width: 500px;" class="col col-6">
             <strong>{{ listing.title }}</strong><br>
-            Description: {{ listing.description }} <br>
+            {{ listing.description }} <br>
 
             {% if user.username != listing.user.username %}
             Created on {{ listing.dt }} by {{ listing.user }}<br><br>
             {% else %}
             Created on {{ listing.dt }} by You<br><br>
             {% endif %}
+
+        {% if watching == 0 %}
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="listing_id" value = "{{ listing.id }}">
+                    <input class="btn btn-sm btn-warning" type="submit" name='create_watchlist_btn' value="Add to watchlist">
+                </form>
+            <br>
+                {% else %}
+                    <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="listing_id" value = "{{ listing.id }}">
+                    <input class="btn btn-sm btn-warning" type="submit" name='delete_watchlist_btn' value="Remove from watchlist">
+                </form>
+            <br>
+            {% endif %}
+
 
             Starting Bid: ${{ listing.starting_bid }}<br>
 
@@ -39,28 +56,16 @@
 
             {% endif %}
 
+
+
+
         {% if user.is_authenticated %}
             {% if listing.active and user.username != listing.user.username %}
             <form action="" method="post">
                 {% csrf_token %}
                 {{ place_bid_form }}
-                <input type="submit" name="place_bid" value="Submit Bid">
+                <input class="btn btn-sm btn-primary" type="submit" name="place_bid" value="Submit Bid">
             </form>
-            {% endif %}
-
-
-                {% if watching == 0 %}
-                <form action="" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="listing_id" value = "{{ listing.id }}">
-                    <input class="btn btn-sm btn-warning" type="submit" name='create_watchlist_btn' value="Add to watchlist">
-                </form>
-                {% else %}
-                    <form action="" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="listing_id" value = "{{ listing.id }}">
-                    <input class="btn btn-sm btn-warning" type="submit" name='delete_watchlist_btn' value="Remove from watchlist">
-                </form>
             {% endif %}
 
                 {% if user.username == listing.user.username %}
