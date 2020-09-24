@@ -170,6 +170,7 @@ def create_listing(request):
                 instance.image_url = no_image
             instance.user = request.user
             instance.save()
+            messages.success(request, 'Listing Created.', extra_tags='message-success')
             return HttpResponseRedirect(reverse('index'))
     form = CreateListing()
     context = {'form': form,

@@ -8,6 +8,18 @@ class CreateListing(ModelForm):
         model = AuctionListing
         fields = ['title', 'description', 'starting_bid', 'category', 'image_url']
 
+        widgets = {
+            'title': forms.TextInput(attrs={"class": "form-control"}),
+            'description': forms.Textarea(attrs={"class": "form-control"}),
+            'starting_bid': forms.NumberInput(attrs={"class": "form-control", "style": "width: 200px;"}),
+            'category': forms.Select(attrs={"class": "form-control", "style": "width: 200px;"}),
+            'image_url': forms.TextInput(attrs={"class": "form-control"})
+        }
+
+        labels = {'starting_bid': 'Sarting bid in USD'}
+
+
+
 
 class PlaceBid(forms.Form):
      #amount = forms.FloatField(label='Bid', widget=forms.FloatField(attrs={"class": "form-group", 'step': "0.05"}))

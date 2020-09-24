@@ -21,11 +21,11 @@ class AuctionListing(models.Model):
     # AuctionListing needs User id -> we need to know who posted the Listing -> onetomany? one user can have several listings
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     dt = models.DateTimeField(auto_now_add=True)
-    title = models.CharField(max_length=100)
-    description = models.CharField(max_length=200)
+    title = models.CharField(max_length=120)
+    description = models.CharField(max_length=1000)
     starting_bid = models.FloatField(null=True)
     image_url = models.CharField(max_length=200, null=True, blank=True)
-    category = models.CharField(max_length=200, null=True, choices=CATEGORY)
+    category = models.CharField(max_length=100, null=True, choices=CATEGORY)
     active = models.BooleanField(default=True)  # Should be True or False if Listing Closed active should be False
 
     def __str__(self):
