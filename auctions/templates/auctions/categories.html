@@ -1,6 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+    <div id="main-container">
     <h2>Categories</h2>
     <br>
     {% for k, v  in categories.items %}
@@ -8,6 +9,6 @@
             <li><a href="{% url 'category' k %}">{{ v }}</a></li>
         </ul>
     {% endfor %}
-
+</div>
 
 {% endblock %}
