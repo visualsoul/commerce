@@ -80,10 +80,22 @@
 
         {% if user.is_authenticated %}
             {% if listing.active and user.username != listing.user.username %}
+
             <form action="" method="post">
                 {% csrf_token %}
-                {{ place_bid_form }}
-                <input class="btn btn-sm btn-primary" type="submit" name="place_bid" value="Submit Bid">
+                <div class="form-row align-items-center">
+                <div class="col-auto">
+                  <span>Place Bid</span>
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">$</div>
+                    </div>
+                    {{ place_bid_form }}
+                  </div>
+                </div>
+
+                <input style="margin-top: 14px;" class="btn btn-primary" type="submit" name="place_bid" value="Submit Bid">
+                </div>
             </form>
             {% endif %}
 
