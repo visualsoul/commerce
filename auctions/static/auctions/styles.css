@@ -6,22 +6,23 @@ body {
 }
 
 .hello-msg {
-    font-size: 18px;
+    font-size: 16px;
     color: whitesmoke;
     padding-top: 8px;
 }
 
 #logout {
-    font-size: 18px;
-    color: whitesmoke;
+    font-size: 16px;
+    color: #9a9da0;
 
 }
 
 #logout:hover {
-    color: white;
+    color: whitesmoke;
     text-decoration-line: none;
-    font-weight: bold;
 }
+
+
 
 .message-success {
     visibility: hidden;

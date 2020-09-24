@@ -7,21 +7,21 @@
   <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
             <ul class="nav navbar-nav navbar-left">
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
+                <a id="logout" class="nav-link" href="{% url 'index' %}">Active Listings</a>
             </li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'categories' %}">Categories</a>
+                    <a id="logout" class="nav-link" href="{% url 'categories' %}">Categories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'watchlist' %}">Watchlist
+                    <a id="logout" class="nav-link" href="{% url 'watchlist' %}">Watchlist
                     {% if watchlist_counter %}
                    [{{ watchlist_counter }}]
                     {% endif %}
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'create' %}">Create Listing</a>
+                    <a id="logout" class="nav-link" href="{% url 'create' %}">Create Listing</a>
                 </li>
 
                 </ul>
@@ -33,10 +33,10 @@
 
             {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                    <a id="logout" class="nav-link" href="{% url 'login' %}">Log In</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    <a id="logout" class="nav-link" href="{% url 'register' %}">Register</a>
                 </li>
             {% endif %}
         </ul>
