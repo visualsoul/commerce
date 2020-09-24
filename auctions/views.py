@@ -11,7 +11,7 @@ from .models import User, AuctionListing, WatchList, Bid, Comment
 from .forms import CreateListing, PlaceBid, CommentForm
 
 categories = {1: "Laptop", 2: "Desktop PC", 3: "CPU", 4: "Memory (RAM)", 5: "Motherboards", 6: "Graphics Cards",
-                  7: "Networking", 8: "Audio", 9: "Other Components"}
+              7: "Networking", 8: "Audio", 9: "Other Components"}
 
 def index(request):
     active_listings = AuctionListing.objects.filter(active=True)
@@ -22,6 +22,7 @@ def index(request):
     }
     return render(request, "auctions/index.html", context)
 
+@login_required(login_url='login')
 def listing(request, pk):
     watch_list_counter = WatchList.objects.filter(user=request.user.id).count()
     _listing = AuctionListing.objects.get(id=pk)

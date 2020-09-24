@@ -2,6 +2,24 @@ body {
     padding: 20px;
 }
 
+.hello-msg {
+    font-size: 18px;
+    color: whitesmoke;
+    padding-top: 8px;
+}
+
+#logout {
+    font-size: 18px;
+    color: whitesmoke;
+
+}
+
+#logout:hover {
+    color: white;
+    text-decoration-line: none;
+    font-weight: bold;
+}
+
 .message-success {
     visibility: hidden;
     margin-left: 5px;
