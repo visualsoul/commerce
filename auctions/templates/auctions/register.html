@@ -2,12 +2,24 @@
 
 {% block body %}
 
+     {% if messages %}
+                {% for message in messages %}
+                    <div style="width: 100%;" class="row justify-content-center {% if message.tags %} {{ message.tags }} {% endif %}">
+                   <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            <br>
+        {% endif %}
+
+    <div class="container" id="register_form">
+
+    <div class="card" style="width: 27rem;">
+
+    <div class="card-header">
     <h2>Register</h2>
+    </div>
 
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
-
+     <div class="card-body" style="background-color: whitesmoke;">
     <form action="{% url 'register' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
@@ -26,5 +38,7 @@
     </form>
 
     Already have an account? <a href="{% url 'login' %}">Log In here.</a>
-
+    </div>
+    </div>
+    </div>
 {% endblock %}

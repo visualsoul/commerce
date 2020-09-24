@@ -1,6 +1,16 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+
+        {% if messages %}
+                {% for message in messages %}
+                    <div style="width: 100%;" class="row justify-content-center {% if message.tags %} {{ message.tags }} {% endif %}">
+                   <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            <br>
+        {% endif %}
+
     <h2 style="padding: 20px;">Active Listings</h2>
     <br>
     {% for listing in active_listings %}

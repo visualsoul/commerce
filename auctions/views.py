@@ -188,8 +188,10 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
+            messages.success(request, 'Login successful.', extra_tags='message-success')
             return HttpResponseRedirect(reverse("index"))
         else:
+            messages.error(request, 'Invalid Username / Password.', extra_tags='message-error')
             return render(request, "auctions/login.html", {
                 "message": "Invalid username and/or password."
             })
@@ -199,6 +201,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
+    messages.success(request, 'You are logged out.', extra_tags='message-success')
     return HttpResponseRedirect(reverse("index"))
 
 
@@ -211,18 +214,17 @@ def register(request):
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
         if password != confirmation:
-            return render(request, "auctions/register.html", {
-                "message": "Passwords must match."
-            })
+            messages.error(request, 'Password must match.', extra_tags='message-error')
+            return render(request, "auctions/register.html")
 
         # Attempt to create new user
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
+            messages.success(request, 'Registration successful.', extra_tags='message-success')
         except IntegrityError:
-            return render(request, "auctions/register.html", {
-                "message": "Username already taken."
-            })
+            messages.error(request, 'Username already taken.', extra_tags='message-error')
+            return render(request, "auctions/register.html")
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:

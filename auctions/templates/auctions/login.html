@@ -1,13 +1,25 @@
 {% extends "auctions/layout.html" %}
-
+{% load static %}
 {% block body %}
 
-    <h2>Login</h2>
-
-    {% if message %}
-        <div>{{ message }}</div>
+    {% if messages %}
+                {% for message in messages %}
+                    <div style="width: 100%;" class="row justify-content-center {% if message.tags %} {{ message.tags }} {% endif %}">
+                   <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            <br>
     {% endif %}
 
+    <div class="container" id="login_form">
+    <div class="card" style="width: 25rem;">
+
+    <div class="card-header">
+    <h2>Login</h2>
+    </div>
+
+
+    <div class="card-body" style="background-color: whitesmoke;">
     <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
@@ -20,5 +32,7 @@
     </form>
 
     Don't have an account? <a href="{% url 'register' %}">Register here.</a>
-
+    </div>
+    </div>
+</div>
 {% endblock %}
