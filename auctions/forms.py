@@ -22,7 +22,6 @@ class CreateListing(ModelForm):
 
 
 class PlaceBid(forms.Form):
-     #amount = forms.FloatField(label='Bid', widget=forms.FloatField(attrs={"class": "form-group", 'step': "0.05"}))
      amount = forms.DecimalField(label='', decimal_places=2, min_value=0, max_digits=10, widget=forms.NumberInput(attrs={'class': "form-control"}))
 
 

@@ -17,19 +17,19 @@
         <div class="col col-6" style="min-width: 500px; max-width: 600px;">
             <a href="{% url 'listing' listing.id %}"><strong>{{ listing.title }}</strong></a><br>
             <span>{{ listing.description }}</span><br><br>
-            Starting Bid: ${{ listing.starting_bid|floatformat:2 }}<br>
+            <span>Starting Price: ${{ listing.starting_bid|floatformat:2 }}</span><br>
             {% if listing.bidItem.last.amount %}
-                Current Price: ${{ listing.bidItem.last.amount }}<br>
+                Current Price: <strong>${{ listing.bidItem.last.amount }}</strong><br>
                 {% else %}
-                Current Price: No Bids <br>
+                Current Price: <strong>No Bids</strong> <br>
              {% endif %}
 
             {% if listing.user.username != user.username%}
-                Posted by: {{ listing.user }} <br>
+                Posted by: <em>{{ listing.user }}</em> <br>
                 {% else %}
-                Posted by: You <br>
+                Posted by: <em>You</em> <br>
             {% endif %}
-            Created {{ listing.dt }}
+            <span style="font-size: 0.95em;">Created {{ listing.dt }}</span>
         </div>
         </div>
         </div>
