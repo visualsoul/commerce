@@ -14,7 +14,7 @@ categories = {1: "Laptop", 2: "Desktop PC", 3: "CPU", 4: "Memory (RAM)", 5: "Mot
               7: "Networking", 8: "Audio", 9: "Other Components"}
 
 def index(request):
-    active_listings = AuctionListing.objects.filter(active=True)
+    active_listings = AuctionListing.objects.filter(active=True).order_by('-dt')
     watch_list_counter = WatchList.objects.filter(user=request.user.id).count()
     context = {
         "active_listings": active_listings,
