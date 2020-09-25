@@ -2,16 +2,7 @@
 
 {% block body %}
 
-    {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <div style="margin-right: 20px;" class="row justify-content-center {% if message.tags %} {{ message.tags }} {% endif %}">
-                   <span>{{ message }}</span>
-                    </div>
-                {% endfor %}
-            </ul>
-            <br>
-    {% endif %}
+{% include "auctions/messages.html" %}
 
     <h2 style="padding: 20px;">Watchlist</h2>
     <br>

@@ -3,11 +3,11 @@
   <a class="navbar-brand" href="{% url 'index' %}">
       <img class="logo" src="{% static 'auctions/images/logo.png' %}" width="40px;" height="40px;" alt="">Auctions
   </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-            <ul class="nav navbar-nav navbar-left">
+            <ul class="nav navbar-nav navbar-left mr-auto">
             <li class="nav-item">
                 <a id="logout" class="nav-link" href="{% url 'index' %}">Active Listings</a>
             </li>

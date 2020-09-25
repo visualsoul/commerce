@@ -1,8 +1,11 @@
 {% extends "auctions/layout.html" %}
 {% load static %}
-{% block body %}
-    <div id="main-container">
 
+
+{% block body %}
+    {% include "auctions/messages.html" %}
+
+    <div id="main-container">
     <br>
     <form action="" method="post">
     {% csrf_token %}

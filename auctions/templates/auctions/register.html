@@ -2,14 +2,7 @@
 
 {% block body %}
 
-     {% if messages %}
-                {% for message in messages %}
-                    <div style="width: 100%;" class="row justify-content-center {% if message.tags %} {{ message.tags }} {% endif %}">
-                   <span>{{ message }}</span>
-                    </div>
-                {% endfor %}
-            <br>
-        {% endif %}
+{% include "auctions/messages.html" %}
 
     <div class="container" id="register_form">
 

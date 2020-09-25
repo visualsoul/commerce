@@ -2,19 +2,11 @@
 {% load static %}
 {% block body %}
 
-
-    {% if messages %}
-                {% for message in messages %}
-                    <div style="width: 100%;" class="row justify-content-center {% if message.tags %} {{ message.tags }} {% endif %}">
-                   <span>{{ message }}</span>
-                    </div>
-                {% endfor %}
-            <br>
-        {% endif %}
+{% include "auctions/messages.html" %}
 
 <div id="main-container">
     <div class="row">
-        <div style="max-width: 300px;margin-right: 20px; margin-bottom: 20px;" class="col col-4">
+        <div style="max-width: 300px;margin-right: 20px; margin-bottom: 20px; padding-top: 5px;" class="col col-4">
             <img src="{{ listing.image_url }}" alt="{{ listing.title }}">
         </div>
 
